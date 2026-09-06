@@ -1,0 +1,240 @@
+{% extends 'admin/base.html' %}
+{% load i18n static %}
+
+{% block title %}Главная панель | {{ site_title|default:'Unity Game Admin' }}{% endblock %}
+
+{% block content %}
+<div class="flex flex-col gap-6">
+
+    <!-- 1. Top Welcome Banner (Google Material You Card) -->
+    <div class="bg-white dark:bg-base-900 border border-base-200 dark:border-base-800 rounded-2xl p-6 shadow-xs flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+        <div class="flex items-center gap-4">
+            <div class="w-12 h-12 rounded-full bg-primary-50 dark:bg-primary-950/60 text-primary-600 dark:text-primary-400 flex items-center justify-center shrink-0">
+                <span class="material-symbols-outlined text-2xl">sports_esports</span>
+            </div>
+            <div>
+                <h1 class="text-xl font-bold text-font-important-light dark:text-font-important-dark tracking-tight mb-0.5">
+                    Панель управления Unity WebGL
+                </h1>
+                <p class="text-xs text-font-subtle-light dark:text-font-subtle-dark">
+                    Центр управления игроками, жизнями и Backend API игрой
+                </p>
+            </div>
+        </div>
+
+        <div class="flex flex-wrap items-center gap-2">
+            <a href="{% url 'admin:users_user_changelist' %}" class="inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-xs font-semibold bg-primary-600 hover:bg-primary-700 text-white transition-all shadow-xs">
+                <span class="material-symbols-outlined text-sm">group</span>
+                <span>Список игроков</span>
+            </a>
+            <a href="{% url 'admin:users_user_add' %}" class="inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-xs font-semibold bg-base-100 hover:bg-base-200 dark:bg-base-800 dark:hover:bg-base-700 text-font-important-light dark:text-font-important-dark transition-all border border-base-200 dark:border-base-700 shadow-xs">
+                <span class="material-symbols-outlined text-sm">person_add</span>
+                <span>+ Добавить игрока</span>
+            </a>
+            <a href="/api/docs/" target="_blank" class="inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-xs font-semibold bg-base-100 hover:bg-base-200 dark:bg-base-800 dark:hover:bg-base-700 text-font-important-light dark:text-font-important-dark transition-all border border-base-200 dark:border-base-700 shadow-xs">
+                <span class="material-symbols-outlined text-sm">api</span>
+                <span>Swagger UI</span>
+            </a>
+        </div>
+    </div>
+
+    <!-- 2. KPI Metrics Grid (Google Workspace Style) -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <!-- Metric 1: Total Players -->
+        <div class="bg-white dark:bg-base-900 border border-base-200 dark:border-base-800 rounded-2xl p-5 shadow-xs flex items-center justify-between">
+            <div>
+                <span class="text-xs font-medium text-font-subtle-light dark:text-font-subtle-dark block mb-1">Всего игроков</span>
+                <span class="text-2xl font-bold text-font-important-light dark:text-font-important-dark">{{ total_players|default:0 }}</span>
+            </div>
+            <div class="w-10 h-10 rounded-full bg-blue-50 dark:bg-blue-950/60 text-blue-600 dark:text-blue-400 flex items-center justify-center">
+                <span class="material-symbols-outlined text-xl">group</span>
+            </div>
+        </div>
+
+        <!-- Metric 2: Active Players -->
+        <div class="bg-white dark:bg-base-900 border border-base-200 dark:border-base-800 rounded-2xl p-5 shadow-xs flex items-center justify-between">
+            <div>
+                <span class="text-xs font-medium text-font-subtle-light dark:text-font-subtle-dark block mb-1">Активные аккаунты</span>
+                <span class="text-2xl font-bold text-font-important-light dark:text-font-important-dark">{{ active_players|default:0 }}</span>
+            </div>
+            <div class="w-10 h-10 rounded-full bg-emerald-50 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 flex items-center justify-center">
+                <span class="material-symbols-outlined text-xl">verified_user</span>
+            </div>
+        </div>
+
+        <!-- Metric 3: Avg Lives -->
+        <div class="bg-white dark:bg-base-900 border border-base-200 dark:border-base-800 rounded-2xl p-5 shadow-xs flex items-center justify-between">
+            <div>
+                <span class="text-xs font-medium text-font-subtle-light dark:text-font-subtle-dark block mb-1">Среднее число жизней</span>
+                <span class="text-2xl font-bold text-font-important-light dark:text-font-important-dark">{{ avg_lives|default:5.0 }}</span>
+            </div>
+            <div class="w-10 h-10 rounded-full bg-amber-50 dark:bg-amber-950/60 text-amber-600 dark:text-amber-400 flex items-center justify-center">
+                <span class="material-symbols-outlined text-xl">favorite</span>
+            </div>
+        </div>
+
+        <!-- Metric 4: Zero Lives -->
+        <div class="bg-white dark:bg-base-900 border border-base-200 dark:border-base-800 rounded-2xl p-5 shadow-xs flex items-center justify-between">
+            <div>
+                <span class="text-xs font-medium text-font-subtle-light dark:text-font-subtle-dark block mb-1">Игроки с 0 жизней</span>
+                <span class="text-2xl font-bold text-font-important-light dark:text-font-important-dark">{{ zero_lives|default:0 }}</span>
+            </div>
+            <div class="w-10 h-10 rounded-full bg-rose-50 dark:bg-rose-950/60 text-rose-600 dark:text-rose-400 flex items-center justify-center">
+                <span class="material-symbols-outlined text-xl">heart_broken</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- 3. Main Dashboard Columns -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+
+        <!-- Left: Quick Management Sections (7 cols) -->
+        <div class="lg:col-span-7 flex flex-col gap-6">
+
+            <!-- Section 1: Players Management Card -->
+            <div class="bg-white dark:bg-base-900 border border-base-200 dark:border-base-800 rounded-2xl p-6 shadow-xs">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="flex items-center gap-3">
+                        <div class="w-9 h-9 rounded-full bg-primary-100 dark:bg-primary-950 text-primary-600 dark:text-primary-400 flex items-center justify-center">
+                            <span class="material-symbols-outlined text-lg">sports_esports</span>
+                        </div>
+                        <div>
+                            <h2 class="text-sm font-bold text-font-important-light dark:text-font-important-dark">Управление игроками</h2>
+                            <p class="text-xs text-font-subtle-light dark:text-font-subtle-dark">Аккаунты Unity WebGL, количество жизней и аудит</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-base-50 dark:bg-base-800/50 rounded-xl p-4 border border-base-200/60 dark:border-base-700/60 mb-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                    <div>
+                        <span class="text-xs font-semibold text-font-important-light dark:text-font-important-dark block">База игроков</span>
+                        <span class="text-xs text-font-subtle-light dark:text-font-subtle-dark">Просмотр, изменение жизней, массовые действия гейм-мастера</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <a href="{% url 'admin:users_user_changelist' %}" class="inline-flex items-center gap-1 px-3.5 py-1.5 rounded-full text-xs font-medium bg-primary-600 hover:bg-primary-700 text-white transition-all">
+                            <span class="material-symbols-outlined text-xs">list</span>
+                            <span>Открыть</span>
+                        </a>
+                        <a href="{% url 'admin:users_user_add' %}" class="inline-flex items-center gap-1 px-3.5 py-1.5 rounded-full text-xs font-medium bg-white dark:bg-base-700 hover:bg-base-100 dark:hover:bg-base-600 text-font-important-light dark:text-font-important-dark border border-base-300 dark:border-base-600 transition-all" title="Добавить нового игрока">
+                            <span class="material-symbols-outlined text-xs">add</span>
+                            <span>Добавить</span>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="bg-base-50 dark:bg-base-800/50 rounded-xl p-4 border border-base-200/60 dark:border-base-700/60 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                    <div>
+                        <span class="text-xs font-semibold text-font-important-light dark:text-font-important-dark block">Группы и права</span>
+                        <span class="text-xs text-font-subtle-light dark:text-font-subtle-dark">Системные группы и разрешения администраторов</span>
+                    </div>
+                    <div>
+                        <a href="{% url 'admin:auth_group_changelist' %}" class="inline-flex items-center gap-1 px-3.5 py-1.5 rounded-full text-xs font-medium bg-white dark:bg-base-700 hover:bg-base-100 dark:hover:bg-base-600 text-font-important-light dark:text-font-important-dark border border-base-300 dark:border-base-600 transition-all">
+                            <span class="material-symbols-outlined text-xs">shield</span>
+                            <span>Группы</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section 2: API Documentation Card -->
+            <div class="bg-white dark:bg-base-900 border border-base-200 dark:border-base-800 rounded-2xl p-6 shadow-xs">
+                <div class="flex items-center gap-3 mb-4">
+                    <div class="w-9 h-9 rounded-full bg-blue-100 dark:bg-blue-950 text-blue-600 dark:text-blue-400 flex items-center justify-center">
+                        <span class="material-symbols-outlined text-lg">api</span>
+                    </div>
+                    <div>
+                        <h2 class="text-sm font-bold text-font-important-light dark:text-font-important-dark">API для Unity WebGL</h2>
+                        <p class="text-xs text-font-subtle-light dark:text-font-subtle-dark">Спецификация REST эндпоинтов и тестирование</p>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <a href="/api/docs/" target="_blank" class="block p-4 rounded-xl border border-base-200 dark:border-base-800 hover:border-primary-500 dark:hover:border-primary-500 bg-base-50/50 dark:bg-base-800/30 transition-all group">
+                        <div class="flex items-center justify-between mb-1.5">
+                            <span class="text-xs font-bold text-font-important-light dark:text-font-important-dark group-hover:text-primary-600 dark:group-hover:text-primary-400">Swagger UI</span>
+                            <span class="material-symbols-outlined text-sm text-font-subtle-light group-hover:translate-x-0.5 transition-transform">open_in_new</span>
+                        </div>
+                        <p class="text-xs text-font-subtle-light dark:text-font-subtle-dark">Интерактивное тестирование всех методов авторизации и жизней</p>
+                    </a>
+
+                    <a href="/api/redoc/" target="_blank" class="block p-4 rounded-xl border border-base-200 dark:border-base-800 hover:border-primary-500 dark:hover:border-primary-500 bg-base-50/50 dark:bg-base-800/30 transition-all group">
+                        <div class="flex items-center justify-between mb-1.5">
+                            <span class="text-xs font-bold text-font-important-light dark:text-font-important-dark group-hover:text-primary-600 dark:group-hover:text-primary-400">ReDoc</span>
+                            <span class="material-symbols-outlined text-sm text-font-subtle-light group-hover:translate-x-0.5 transition-transform">open_in_new</span>
+                        </div>
+                        <p class="text-xs text-font-subtle-light dark:text-font-subtle-dark">Спецификация OpenAPI 3.0 в формате документации</p>
+                    </a>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Right: Recent Players List (5 cols) -->
+        <div class="lg:col-span-5 flex flex-col gap-6">
+            <div class="bg-white dark:bg-base-900 border border-base-200 dark:border-base-800 rounded-2xl p-6 shadow-xs">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="flex items-center gap-2">
+                        <span class="material-symbols-outlined text-lg text-primary-600">history</span>
+                        <h2 class="text-sm font-bold text-font-important-light dark:text-font-important-dark">Последние игроки</h2>
+                    </div>
+                    <a href="{% url 'admin:users_user_changelist' %}" class="text-xs font-medium text-primary-600 hover:underline">
+                        Все ({{ total_players }})
+                    </a>
+                </div>
+
+                {% if recent_players %}
+                    <div class="divide-y divide-base-100 dark:divide-base-800">
+                        {% for player in recent_players %}
+                            <div class="py-3 flex items-center justify-between gap-3">
+                                <div class="flex items-center gap-3 min-w-0">
+                                    <div class="w-8 h-8 rounded-full bg-base-100 dark:bg-base-800 flex items-center justify-center font-bold text-xs text-primary-600 dark:text-primary-400 shrink-0">
+                                        {{ player.username|slice:":1"|upper }}
+                                    </div>
+                                    <div class="min-w-0">
+                                        <a href="{% url 'admin:users_user_change' player.pk %}" class="text-xs font-semibold text-font-important-light dark:text-font-important-dark hover:text-primary-600 truncate block">
+                                            {{ player.username }}
+                                        </a>
+                                        <span class="text-[11px] text-font-subtle-light dark:text-font-subtle-dark block truncate">
+                                            {{ player.created_at|date:"d.m.Y H:i" }}
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <div class="flex items-center gap-2 shrink-0">
+                                    {% if player.lives >= 5 %}
+                                        <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800">
+                                            <span class="material-symbols-outlined text-xs">favorite</span>
+                                            {{ player.lives }}
+                                        </span>
+                                    {% elif player.lives > 0 %}
+                                        <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-amber-100 dark:bg-amber-950 text-amber-800 dark:text-amber-300 border border-amber-200 dark:border-amber-800">
+                                            <span class="material-symbols-outlined text-xs">favorite_border</span>
+                                            {{ player.lives }}
+                                        </span>
+                                    {% else %}
+                                        <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-rose-100 dark:bg-rose-950 text-rose-800 dark:text-rose-300 border border-rose-200 dark:border-rose-800">
+                                            <span class="material-symbols-outlined text-xs">heart_broken</span>
+                                            0
+                                        </span>
+                                    {% endif %}
+
+                                    <a href="{% url 'admin:users_user_change' player.pk %}" class="text-base-400 hover:text-font-important-light dark:hover:text-font-important-dark p-1" title="Редактировать">
+                                        <span class="material-symbols-outlined text-sm">edit</span>
+                                    </a>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <div class="py-8 text-center">
+                        <span class="material-symbols-outlined text-3xl text-base-400 mb-2">person_off</span>
+                        <p class="text-xs text-font-subtle-light dark:text-font-subtle-dark">Пока нет зарегистрированных игроков</p>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+
+    </div>
+
+</div>
+{% endblock %}

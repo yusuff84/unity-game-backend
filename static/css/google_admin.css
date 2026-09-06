@@ -1,0 +1,173 @@
+/* =========================================================
+   Google Material You (M3) Admin Theme for Unity WebGL
+   Clean, Rounded, Light & Dark mode, No Clutter
+   ========================================================= */
+
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
+
+:root {
+    --google-font: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+    --google-blue: #1a73e8;
+    --google-blue-hover: #1557b0;
+    --google-blue-dark: #8ab4f8;
+    --google-radius-pill: 9999px;
+    --google-radius-card: 18px;
+    --google-radius-input: 12px;
+}
+
+body, html, input, button, select, textarea {
+    font-family: var(--google-font) !important;
+}
+
+/* ---------------------------------------------------------
+   1. Fix clipping bugs (Captions, Headings, Corners)
+   --------------------------------------------------------- */
+caption {
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+    padding-top: 0.5rem !important;
+    overflow: visible !important;
+}
+
+table {
+    border-collapse: separate !important;
+}
+
+/* ---------------------------------------------------------
+   2. Google Rounded Pill Buttons
+   --------------------------------------------------------- */
+button[type="submit"],
+.submit-row input,
+.submit-row button,
+.button,
+a.button,
+.actions button,
+.object-tools a {
+    border-radius: var(--google-radius-pill) !important;
+    font-weight: 600 !important;
+    letter-spacing: 0.015em !important;
+    padding-left: 1.25rem !important;
+    padding-right: 1.25rem !important;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    box-shadow: 0 1px 2px rgba(60, 64, 67, 0.2) !important;
+}
+
+button[type="submit"]:hover,
+.submit-row input:hover,
+.submit-row button:hover,
+.object-tools a:hover {
+    transform: translateY(-1px) !important;
+    box-shadow: 0 4px 10px rgba(26, 115, 232, 0.3) !important;
+}
+
+/* ---------------------------------------------------------
+   3. Google Rounded Form Inputs
+   --------------------------------------------------------- */
+input[type="text"],
+input[type="password"],
+input[type="email"],
+input[type="number"],
+input[type="search"],
+select,
+textarea {
+    border-radius: var(--google-radius-input) !important;
+    transition: all 0.2s ease !important;
+}
+
+/* Rounded search input */
+input[type="search"],
+input[name="q"] {
+    border-radius: var(--google-radius-pill) !important;
+    padding-left: 1.25rem !important;
+    padding-right: 1.25rem !important;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+    outline: none !important;
+    box-shadow: 0 0 0 3px rgba(26, 115, 232, 0.2) !important;
+}
+
+/* ---------------------------------------------------------
+   4. Google Sidebar (Pill Navigation Items)
+   --------------------------------------------------------- */
+aside nav a {
+    border-radius: var(--google-radius-pill) !important;
+    padding-top: 0.55rem !important;
+    padding-bottom: 0.55rem !important;
+    margin-bottom: 3px !important;
+    font-weight: 500 !important;
+    transition: all 0.15s ease !important;
+}
+
+/* ---------------------------------------------------------
+   5. Google Rounded Cards & Fieldsets
+   --------------------------------------------------------- */
+fieldset,
+details {
+    border-radius: var(--google-radius-card) !important;
+    margin-bottom: 1.5rem !important;
+    border: 1px solid rgba(128, 128, 128, 0.12) !important;
+}
+
+/* ---------------------------------------------------------
+   6. Google Light Theme (Clean White & Slate)
+   --------------------------------------------------------- */
+html:not(.dark) body {
+    background-color: #f8fafd !important;
+    color: #1f1f1f !important;
+}
+
+html:not(.dark) .bg-white {
+    background-color: #ffffff !important;
+    border-color: #e8eaed !important;
+    box-shadow: 0 1px 3px rgba(60, 64, 67, 0.06) !important;
+}
+
+html:not(.dark) input,
+html:not(.dark) select,
+html:not(.dark) textarea {
+    background-color: #ffffff !important;
+    border: 1px solid #dadce0 !important;
+    color: #202124 !important;
+}
+
+html:not(.dark) input:focus,
+html:not(.dark) select:focus,
+html:not(.dark) textarea:focus {
+    border-color: var(--google-blue) !important;
+}
+
+/* ---------------------------------------------------------
+   7. Google Dark Theme (Material Dark Slate)
+   --------------------------------------------------------- */
+html.dark body {
+    background-color: #131314 !important;
+    color: #e3e3e3 !important;
+}
+
+html.dark .dark\:bg-base-900 {
+    background-color: #1e1f20 !important;
+    border-color: #303134 !important;
+}
+
+html.dark .dark\:bg-base-800 {
+    background-color: #28292a !important;
+    border-color: #303134 !important;
+}
+
+html.dark input,
+html.dark select,
+html.dark textarea {
+    background-color: #28292a !important;
+    border: 1px solid #3c4043 !important;
+    color: #e3e3e3 !important;
+}
+
+html.dark input:focus,
+html.dark select:focus,
+html.dark textarea:focus {
+    border-color: var(--google-blue-dark) !important;
+    box-shadow: 0 0 0 3px rgba(138, 180, 248, 0.25) !important;
+}

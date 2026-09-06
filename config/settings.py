@@ -265,6 +265,14 @@ SECURE_SSL_REDIRECT = get_env_bool('SECURE_SSL_REDIRECT', default=False)
 SESSION_COOKIE_SECURE = get_env_bool('SESSION_COOKIE_SECURE', default=False)
 CSRF_COOKIE_SECURE = get_env_bool('CSRF_COOKIE_SECURE', default=False)
 
+CSRF_TRUSTED_ORIGINS = get_env_list('CSRF_TRUSTED_ORIGINS', default=[
+    'https://game.magomed-coder-adminchauto-77b7.twc1.net',
+    'http://localhost:8001',
+    'http://127.0.0.1:8001',
+    'http://localhost:8000',
+    'http://127.0.0.1:8000',
+])
+
 if not DEBUG:
     SECURE_BROWSER_XSS_FILTER = True
     SECURE_CONTENT_TYPE_NOSNIFF = True
